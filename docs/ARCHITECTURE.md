@@ -105,22 +105,33 @@ sequenceDiagram
 │   │   ├── ai/
 │   │   │   ├── stream-parser.js          # Pure Parser แยกส่วน <thinking>...</thinking> และ story
 │   │   │   ├── gemini-service.js         # ตัวเชื่อมต่อ Google Gemini API (Stream)
-│   │   │   └── openrouter-service.js     # ตัวเชื่อมต่อ OpenRouter API (Stream)
+│   │   │   └── mock-stream-service.js    # ตัวจำลองการสตรีมมิ่งสด
 │   │   └── routes/
 │   │       ├── chat-routes.js            # Router จัดการ /api/chat/stream และ /api/chat/history
 │   │       └── health-routes.js          # Endpoint ตรวจสอบสถานะการเชื่อมต่อ Supabase & AI
 │   └── test/
+│       ├── server-e2e.test.js            # E2E Test ทดสอบการทำงานของเซิร์ฟเวอร์และสตรีม
 │       ├── stream-parser.test.js         # Unit Test ทดสอบการตัดแยก Thinking Logs ในทุกเคส
 │       └── supabase-db.test.js           # Unit Test ทดสอบการอ่าน-เขียนตาราง chat_history
+├── frontend/                             # ฝั่งหน้าบ้าน (Client UI & Presentation)
+│   ├── css/
+│   │   └── style.css                     # สไตล์องค์ประกอบ Dark Grey Tones, Layout & Themes
+│   ├── js/
+│   │   ├── app.js                        # Frontend Controller & UI Event Listeners
+│   │   ├── editor.js                     # ระบบจัดการ Canvas & Rich Text Editing
+│   │   ├── notes.js                      # ระบบจัดการ Lorebook (Characters, Locations, Overview)
+│   │   └── storage.js                    # ระบบจัดเก็บ IndexedDB & Supabase Sync หน้าบ้าน
+│   └── index.html                        # โครงสร้างหน้าเว็บหลัก Frontend
+├── shared/                               # ส่วนกลางใช้ร่วมกันทั้ง Frontend และ Backend
+│   └── story-chat-core.js                # Pure Domain Logic, Prompt Builder, Stream State Tracker
+├── tests/                                # ชุดทดสอบรวมระดับโปรเจกต์
+│   └── test-core.js                      # Automated Unit Tests สำหรับ shared/story-chat-core.js
 ├── docs/
 │   ├── ARCHITECTURE.md                   # เอกสารพิมพ์เขียวนี้
 │   └── superpowers/plans/                # บันทึกแผนการพัฒนา
-├── index.html                            # โครงสร้างหน้าเว็บ Frontend
-├── app.js                                # Frontend Controller (ปรับปรุงให้รองรับ SSE Stream)
-├── app.css                               # สไตล์หลัก
-├── style.css                             # สไตล์องค์ประกอบ Thought Line & Dark Grey Tones
-├── story-chat-core.js                    # Pure Logic Module สำหรับบริหารบริบทเรื่องและนิยาย
-└── test-core.js                          # Unit Test ของฝั่ง Frontend Core
+├── .env.example                          # Template ตัวแปรสภาพแวดล้อมรวมจุดเดียวที่ Root
+├── .gitignore                            # กฎ Git ควบคุมทั้งโปรเจกต์จุดเดียวที่ Root
+└── package.json                          # Root Scripts (npm run dev, npm test)
 ```
 
 ---

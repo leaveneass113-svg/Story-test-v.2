@@ -900,6 +900,15 @@ body {
   border-color: var(--border-light);
 }
 
+.msg-action-btn.insert-btn {
+  color: var(--accent-blue);
+  border-color: rgba(71, 140, 209, 0.3);
+}
+
+.msg-action-btn.insert-btn:hover {
+  background: rgba(71, 140, 209, 0.15);
+}
+
 .msg-action-btn.regen-btn {
   color: #10b981;
   border-color: rgba(16, 185, 129, 0.3);

@@ -1404,29 +1404,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let actionsHtml = "";
     if (msg.role === "ai" && !msg.isThinking) {
-      const autoSavedBadgeHtml = msg.autoSavedToCanvas
+      const insertBtnHtml = msg.autoSavedToCanvas
         ? `<span class="msg-canvas-synced-badge" style="display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #10b981; padding: 3px 8px; background: rgba(16,185,129,0.12); border-radius: 4px; font-weight: 500;">
             <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 8.5l3.5 3.5 6.5-7"/></svg>
-            อัปเดตหน้ากระดาษแล้ว
+            ส่งลงกระดาษแล้ว
           </span>`
-        : "";
-      const copyActionHtml = msg.autoSavedToCanvas
-        ? ""
-        : `<button class="msg-action-btn" data-action="copy" data-index="${index}" title="คัดลอกข้อความ">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8" height="8" rx="1.5"/><path d="M3 11V3h8"/></svg>
-            คัดลอก
+        : `<button class="msg-action-btn insert-btn" data-action="insert" data-index="${index}" title="แทรกเนื้อเรื่องลงหน้ากระดาษ">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3 8h10"/></svg>
+            แทรกลงในนิยาย
           </button>`;
 
       actionsHtml = `
         <div class="msg-actions">
-          ${autoSavedBadgeHtml}
+          ${insertBtnHtml}
           <button class="msg-action-btn regen-btn" data-action="regenerate" data-index="${index}" title="สร้างคำตอบนี้ใหม่ (Regenerate)">
             <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M14 8A6 6 0 1 1 8 2c2.4 0 4.5 1.4 5.5 3.5M14 2v4h-4"/>
             </svg>
             สร้างใหม่
           </button>
-          ${copyActionHtml}
+          <button class="msg-action-btn" data-action="copy" data-index="${index}" title="คัดลอกข้อความ">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8" height="8" rx="1.5"/><path d="M3 11V3h8"/></svg>
+            คัดลอก
+          </button>
         </div>
       `;
     } else if (msg.role === "user") {
@@ -1445,11 +1445,7 @@ document.addEventListener("DOMContentLoaded", () => {
     el.innerHTML = `
       ${!msg.isThinking ? `<button class="msg-del-btn" data-del-idx="${index}" title="ลบข้อความนี้">✕</button>` : ""}
       ${thinkingHtml}
-      ${
-        !msg.isThinking && !(msg.role === "ai" && msg.autoSavedToCanvas)
-          ? `<div class="msg-bubble">${formatAiResponseText(msg.content)}</div>`
-          : ""
-      }
+      ${!msg.isThinking ? `<div class="msg-bubble">${formatAiResponseText(msg.content)}</div>` : ""}
       ${actionsHtml}
     `;
 
@@ -1496,7 +1492,12 @@ document.addEventListener("DOMContentLoaded", () => {
     el.querySelectorAll(".msg-action-btn, .user-action-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         const action = btn.getAttribute("data-action");
-        if (action === "copy") {
+        if (action === "insert") {
+          const pureStoryText = StoryChatCore.extractPureStoryContent(
+            msg.content,
+          );
+          insertTextIntoEditor(pureStoryText);
+        } else if (action === "copy") {
           const pureStoryText = StoryChatCore.extractPureStoryContent(
             msg.content,
           );
@@ -1909,9 +1910,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   if (inserted) {
                     if (data.chat_text) tempAiMsg.content = data.chat_text;
                     tempAiMsg.autoSavedToCanvas = true;
-                    showToast(
-                      "อัปเดตเนื้อหาในหน้ากระดาษตรงกลางแล้ว ✍️",
-                    );
+                    showToast("อัปเดตเนื้อหาในหน้ากระดาษตรงกลางแล้ว ✍️");
                   } else {
                     tempAiMsg.content = StoryChatCore.cleanCanvasNovelContent(
                       data.canvas_text,
@@ -2022,10 +2021,7 @@ document.addEventListener("DOMContentLoaded", () => {
       lastAiMsg.thoughtOpen = false; // collapse on settle
 
       // แยกแท็กเนื้อเรื่อง <story_canvas> หรือใช้ Smart Story Extractor ส่งเข้าหน้ากระดาษตรงกลางอัตโนมัติ (หากยังไม่ได้แยกจาก structured output)
-      if (
-        !lastAiMsg.autoSavedToCanvas &&
-        !lastAiMsg.canvasInsertAttempted
-      ) {
+      if (!lastAiMsg.autoSavedToCanvas && !lastAiMsg.canvasInsertAttempted) {
         const splitResult = StoryChatCore.splitChatAndCanvasContent(
           lastAiMsg.content,
           requestPrompt,

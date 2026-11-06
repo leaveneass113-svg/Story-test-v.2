@@ -33,10 +33,13 @@ app.use((req, res, next) => {
 app.use('/api/chat', chatRoutes);
 app.use('/api/health', healthRoutes);
 
-// ================= Static Files (Frontend) =================
-// บริการไฟล์หน้าบ้านจาก root เพื่อให้สามารถเปิด http://localhost:3001 ได้โดยตรง
-const frontendPath = path.resolve(__dirname, '../../');
+// ================= Static Files (Frontend & Shared) =================
+// บริการไฟล์หน้าบ้านจาก frontend และ shared เพื่อให้สามารถเปิด http://localhost:3001 ได้โดยตรง
+const frontendPath = path.resolve(__dirname, '../../frontend');
+const sharedPath = path.resolve(__dirname, '../../shared');
+
 app.use(express.static(frontendPath));
+app.use('/shared', express.static(sharedPath));
 
 // Fallback Route สำหรับหน้าเว็บ
 app.get('/', (req, res) => {

@@ -16,7 +16,7 @@ const {
   deleteChatMessage,
   clearStoryChatHistory,
 } = require('../db/supabase');
-const StoryChatCore = require('../../../story-chat-core');
+const StoryChatCore = require('../../../shared/story-chat-core');
 
 /**
  * POST /api/chat/stream

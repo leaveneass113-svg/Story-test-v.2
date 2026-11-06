@@ -116,6 +116,23 @@ async function runE2eTests() {
     assert.ok(data.history.length >= 1, 'มีบันทึกที่เพิ่งสตรีมไป');
   });
 
+  // Test 4: ตรวจสอบการบริการไฟล์หน้าบ้าน (Static Frontend & Shared Files)
+  await test('4. ตรวจสอบการโหลดไฟล์หน้าบ้าน (GET / และ /shared/story-chat-core.js)', async () => {
+    const htmlRes = await fetch(`${baseUrl}/`);
+    assert.strictEqual(htmlRes.status, 200);
+    const htmlText = await htmlRes.text();
+    assert.ok(htmlText.includes('<title>'), 'ต้องมีแท็ก <title> ในหน้า HTML');
+    assert.ok(htmlText.includes('app-container'), 'ต้องมี app-container ในหน้า HTML');
+
+    const cssRes = await fetch(`${baseUrl}/css/style.css`);
+    assert.strictEqual(cssRes.status, 200);
+
+    const sharedRes = await fetch(`${baseUrl}/shared/story-chat-core.js`);
+    assert.strictEqual(sharedRes.status, 200);
+    const sharedText = await sharedRes.text();
+    assert.ok(sharedText.includes('StoryChatCore'), 'ไฟล์ shared ต้องมี StoryChatCore');
+  });
+
   // ปิดเซิร์ฟเวอร์หลังทดสอบเสร็จ
   console.log('\n========================================');
   console.log(`📊 ผลการทดสอบ: ผ่าน ${passed} ข้อ | ไม่ผ่าน ${failed} ข้อ`);
