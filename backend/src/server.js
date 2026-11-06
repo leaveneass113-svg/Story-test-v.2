@@ -67,8 +67,36 @@ function startServer(port = config.port) {
     console.log(`🤖 AI Provider:    ${config.ai.provider} (${config.ai.defaultModel})`);
     console.log('========================================================');
   });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`\n⚠️  พอร์ต ${port} กำลังถูกโปรเซสอื่นใช้งานอยู่ (EADDRINUSE)`);
+      console.error(`👉 คำแนะนำ: มี Node.js ตัวเดิมเปิดค้างอยู่ ให้กด Ctrl+C ในหน้าต่างเดิม หรือปิดโปรเซสที่ค้างอยู่\n`);
+      process.exit(1);
+    } else {
+      console.error('[Server Listen Error]', err);
+    }
+  });
+
   return server;
 }
+
+// Graceful Shutdown ปิด Socket เมื่อกด Ctrl+C เพื่อป้องกันพอร์ตค้าง
+process.on('SIGINT', () => {
+  if (server) {
+    server.close(() => process.exit(0));
+  } else {
+    process.exit(0);
+  }
+});
+
+process.on('SIGTERM', () => {
+  if (server) {
+    server.close(() => process.exit(0));
+  } else {
+    process.exit(0);
+  }
+});
 
 if (require.main === module) {
   startServer(config.port);
