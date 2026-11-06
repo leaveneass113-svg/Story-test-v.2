@@ -140,59 +140,10 @@ body {
   border-color: var(--accent-blue);
 }
 
-.nav-status-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--text-muted);
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.nav-status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--accent-green);
-}
-
 .nav-right {
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.stat-pill {
-  font-size: 12px;
-  color: var(--text-secondary);
-  padding: 4px 10px;
-  background: var(--bg-tertiary);
-  border-radius: var(--radius-full);
-  border: 1px solid var(--border-color);
-}
-
-.btn-upgrade {
-  background: linear-gradient(135deg, #478cd1 0%, #8b5cf6 100%);
-  color: #fff;
-  border: none;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 6px 14px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition:
-    opacity 0.2s,
-    transform 0.1s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.btn-upgrade:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
 }
 
 .btn-share {
@@ -1329,38 +1280,6 @@ body {
    สไตล์เพิ่มเติม: ระบบจัดการนิยาย (Story Management) & ปุ่มลบต่างๆ
    ========================================================================== */
 
-/* ปุ่มเพิ่มเรื่องใหม่บน Top Navbar */
-.btn-new-story {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: linear-gradient(
-    135deg,
-    rgba(71, 140, 209, 0.2),
-    rgba(139, 92, 246, 0.2)
-  );
-  border: 1px solid rgba(71, 140, 209, 0.4);
-  color: #93c5fd;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 5px 12px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.btn-new-story:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(71, 140, 209, 0.35),
-    rgba(139, 92, 246, 0.35)
-  );
-  border-color: var(--accent-blue);
-  color: #fff;
-  box-shadow: 0 0 10px rgba(71, 140, 209, 0.3);
-}
-
 /* ปุ่มล้างกระดาษใน Toolbar (ปรับเป็นไอคอนล้วน) */
 .tb-btn-danger {
   color: #f87171 !important;
@@ -2019,23 +1938,6 @@ body {
   .doc-title-input {
     max-width: 130px;
     font-size: 13px;
-  }
-
-  .btn-new-story span {
-    display: none;
-  }
-
-  .btn-new-story {
-    padding: 6px 8px;
-  }
-
-  .stat-pill {
-    display: none;
-  }
-
-  .btn-upgrade {
-    padding: 5px 8px;
-    font-size: 12px;
   }
 
   .btn-share {

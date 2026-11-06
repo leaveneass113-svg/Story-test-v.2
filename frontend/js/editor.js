@@ -1,30 +1,9 @@
 /**
  * js/editor.js
- * จัดการ Text Editor, Formatting Toolbar, Selection, และ Word/Character Counters
+ * จัดการ Text Editor, Formatting Toolbar, และระบบส่งออกไฟล์
  */
 
 const NovelEditor = (function () {
-  /**
-   * คำนวณจำนวนคำและตัวอักษรของข้อความภาษาไทยและสากล
-   */
-  function calculateCounts(htmlOrText) {
-    const tempEl = document.createElement("div");
-    tempEl.innerHTML = htmlOrText || "";
-    const cleanText = (tempEl.innerText || tempEl.textContent || "").trim();
-
-    // ตัวอักษร (ไม่รวมช่องว่าง)
-    const charCount = cleanText.replace(/\s+/g, "").length;
-
-    // คำ (รองรับทั้งภาษาอังกฤษที่คั่นด้วย space และภาษาไทยโดยประมาณ)
-    const words = cleanText ? cleanText.split(/\s+/).filter(Boolean).length : 0;
-
-    return {
-      charCount,
-      wordCount: words,
-      text: cleanText,
-    };
-  }
-
   /**
    * จัดการคำสั่งการจัดรูปแบบ Rich Text (bold, italic, lists, etc.)
    */
@@ -66,7 +45,6 @@ const NovelEditor = (function () {
   }
 
   return {
-    calculateCounts,
     executeFormatting,
     getSafeFilename,
     triggerDownload,

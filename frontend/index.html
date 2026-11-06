@@ -68,38 +68,10 @@
               placeholder="ชื่อนิยายหรือตอน..."
               aria-label="ชื่อนิยายหรือตอน"
             />
-            <div class="nav-status-badge">
-              <span class="nav-status-dot"></span>
-              <span id="save-status-text">บันทึกแล้ว</span>
-            </div>
           </div>
-
-          <!-- ปุ่มเพิ่มเรื่องใหม่ -->
-          <button
-            id="btn-new-story"
-            class="btn-new-story"
-            title="สร้างนิยายเรื่องใหม่"
-            aria-label="สร้างนิยายเรื่องใหม่"
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M8 3v10M3 8h10" />
-            </svg>
-            <span>+ เพิ่มเรื่องใหม่</span>
-          </button>
         </div>
 
         <div class="nav-right">
-          <!-- Word & Character Counts -->
-          <span id="char-count-badge" class="stat-pill" aria-label="จำนวนตัวอักษร">0 ตัวอักษร</span>
-          <span id="word-count-badge" class="stat-pill" aria-label="จำนวนคำ">0 คำ</span>
-
           <!-- Export Document -->
           <button id="btn-export" class="btn-share" title="ส่งออกไฟล์" aria-label="ส่งออกเอกสารนิยาย">
             <svg
@@ -136,19 +108,6 @@
               />
             </svg>
           </button>
-
-          <!-- Upgrade Button -->
-          <button id="btn-upgrade" class="btn-upgrade" title="อัปเกรดเป็น Pro Plan" aria-label="ดูข้อมูลสิทธิประโยชน์ Pro Plan">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-              <path
-                d="M8 1l2 4 4.5.7-3.3 3.2.8 4.6L8 11.3 3.9 13.5l.8-4.6L1.5 5.7 6 5l2-4z"
-              />
-            </svg>
-            อัปเกรด
-          </button>
-
-          <!-- Share Button -->
-          <button id="btn-share" class="btn-share" aria-label="เปิดหน้าต่างแบ่งปันผลงานนิยาย">แบ่งปัน</button>
 
           <!-- Toggle Right Sidebar (AI Chat) -->
           <button
@@ -1379,116 +1338,6 @@
             style="background-color: #dc2626"
           >
             ยืนยัน
-          </button>
-        </div>
-      </div>
-    </div>
-    <!-- ================= Modal: แบ่งปันผลงานนิยาย (Share Modal) ================= -->
-    <div id="modal-share" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="share-modal-title">
-      <div class="modal-box" style="max-width: 520px">
-        <div class="modal-header">
-          <h3 id="share-modal-title" class="modal-title">📤 แบ่งปันผลงานนิยาย</h3>
-          <button
-            class="nav-btn-icon"
-            onclick="closeModal('modal-share')"
-            aria-label="ปิดหน้าต่างแบ่งปัน"
-          >
-            ✕
-          </button>
-        </div>
-        <div class="modal-body">
-          <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
-            เลือกวิธีแบ่งปันเนื้อหานิยายและโครงเรื่องของคุณไปยังแพลตฟอร์มต่างๆ:
-          </p>
-          <div style="display: flex; flex-direction: column; gap: 10px;">
-            <button id="btn-share-copy-canvas" class="quick-action-btn" style="text-align: left; padding: 12px;">
-              📋 <strong>คัดลอกเนื้อหานิยายทั้งหมดลงคลิปบอร์ด</strong>
-              <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">
-                คัดลอกเฉพาะตัวบทความ สำหรับนำไปวางใน ReadAWrite, Dek-D หรือ Fictionlog
-              </div>
-            </button>
-            <button id="btn-share-copy-synopsis" class="quick-action-btn" style="text-align: left; padding: 12px;">
-              📝 <strong>คัดลอกโครงเรื่องและสรุปตัวละคร (Lorebook Summary)</strong>
-              <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">
-                คัดลอกข้อมูลสรุปเพื่อแลกเปลี่ยนกับนักเขียนคนอื่นหรือส่งบรรณาธิการ
-              </div>
-            </button>
-            <button id="btn-share-copy-link" class="quick-action-btn" style="text-align: left; padding: 12px;">
-              🔗 <strong>คัดลอกลิงก์โครงการสตูดิโอ</strong>
-              <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">
-                บันทึกตำแหน่ง URL สำหรับกลับมาเปิดหน้าสตูดิโอได้อย่างรวดเร็ว
-              </div>
-            </button>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn-secondary"
-            onclick="closeModal('modal-share')"
-          >
-            ปิด
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ================= Modal: ข้อมูล Pro Plan (Upgrade Modal) ================= -->
-    <div id="modal-upgrade" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="upgrade-modal-title">
-      <div class="modal-box" style="max-width: 580px">
-        <div class="modal-header">
-          <h3 id="upgrade-modal-title" class="modal-title">🌟 Novel AI Studio Pro Plan</h3>
-          <button
-            class="nav-btn-icon"
-            onclick="closeModal('modal-upgrade')"
-            aria-label="ปิดหน้าต่างอัปเกรด"
-          >
-            ✕
-          </button>
-        </div>
-        <div class="modal-body">
-          <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.6;">
-            ยกระดับสตูดิโอแต่งนิยายของคุณสู่มาตรฐานมืออาชีพ ปลดล็อกศักยภาพสูงสุดของโมเดล AI และคลาวด์:
-          </p>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-            <div style="background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px;">
-              <h4 style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">Standard Plan (ปัจจุบัน)</h4>
-              <ul style="font-size: 12.5px; color: var(--text-muted); padding-left: 16px; line-height: 1.8;">
-                <li>โมเดล Gemini 3.1 Flash-Lite</li>
-                <li>จัดเก็บข้อมูลใน Local Storage</li>
-                <li>Lorebook ตัวละครและสถานที่พื้นฐาน</li>
-                <li>ส่งออกไฟล์ .txt, .md, .html</li>
-              </ul>
-            </div>
-            <div style="background: rgba(71, 140, 209, 0.08); border: 1px solid var(--accent-blue); border-radius: var(--radius-md); padding: 14px;">
-              <h4 style="font-size: 14px; color: var(--accent-blue); margin-bottom: 8px;">✨ Pro Plan (แนะนำ)</h4>
-              <ul style="font-size: 12.5px; color: var(--text-primary); padding-left: 16px; line-height: 1.8;">
-                <li>⚡ Gemini 3.8 Flash (High Speed & Deep Logic)</li>
-                <li>🧠 Thinking Logs & Real-time Reasoning Stream</li>
-                <li>☁️ ซิงก์คลาวด์ Supabase ไม่จำกัดขนาดเรื่อง</li>
-                <li>📖 Smart Story Extractor ป้องกันข้อความหลุด</li>
-              </ul>
-            </div>
-          </div>
-          <div style="background: rgba(139, 92, 246, 0.1); border: 1px dashed var(--accent-purple); border-radius: var(--radius-md); padding: 12px; font-size: 12.5px; color: var(--text-primary);">
-            🎉 <strong>สิทธิพิเศษช่วงพรีวิว:</strong> ขณะนี้ระบบเปิดให้ทุกท่านทดลองใช้งานฟีเจอร์ระดับ Pro ได้ฟรีเต็มรูปแบบ โดยไม่ต้องผูกบัตรเครดิต!
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn-secondary"
-            onclick="closeModal('modal-upgrade')"
-          >
-            ปิด
-          </button>
-          <button
-            id="btn-activate-pro-preview"
-            type="button"
-            class="btn-primary"
-            style="background: linear-gradient(135deg, #478cd1 0%, #8b5cf6 100%); border: none;"
-          >
-            เปิดใช้งาน Pro Preview ฟรีทันที ✨
           </button>
         </div>
       </div>

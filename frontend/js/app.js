@@ -128,11 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const docTitleInput = document.getElementById("doc-title-input");
   const canvasTitle = document.getElementById("canvas-title");
   const canvasBody = document.getElementById("canvas-body");
-  const wordCountBadge = document.getElementById("word-count-badge");
-  const charCountBadge = document.getElementById("char-count-badge");
-  const saveStatusText = document.getElementById("save-status-text");
 
-  const btnNewStory = document.getElementById("btn-new-story");
   const btnStoriesList = document.getElementById("btn-stories-list");
   const btnClearCanvas = document.getElementById("btn-clear-canvas");
   const btnModalAddStory = document.getElementById("btn-modal-add-story");
@@ -153,9 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatInput = document.getElementById("chat-input");
   const btnSendChat = document.getElementById("btn-send-chat");
   const btnAbortChat = document.getElementById("btn-abort-chat");
-  const btnUpgrade =
-    document.getElementById("btn-upgrade") ||
-    document.querySelector(".btn-upgrade");
   const styleSelect = document.getElementById("style-select");
   const btnNewChat = document.getElementById("btn-new-chat");
   const floatingAiBar = document.getElementById("floating-ai-bar");
@@ -231,7 +224,6 @@ document.addEventListener("DOMContentLoaded", () => {
     canvasBody.innerHTML = story.content;
     savedEditorRange = null;
 
-    updateCounts();
     renderNotes();
     renderChat();
   }
@@ -266,9 +258,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (res.ok) {
         const data = await res.json();
         console.log("🟢 [Novel AI] เชื่อมต่อ Backend & Supabase สำเร็จ:", data);
-        if (saveStatusText) {
-          saveStatusText.textContent = "บันทึกแล้ว (คลาวด์พร้อม ☁️)";
-        }
       }
     } catch (e) {
       console.log("ℹ️ [Novel AI] กำลังทำงานในโหมด Client Standalone / Offline");
@@ -289,7 +278,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     canvasBody.addEventListener("input", () => {
       saveCurrentEditorSelection();
-      updateCounts();
       triggerAutoSave();
       autoScrollCanvasIfNeeded();
     });
@@ -429,9 +417,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    if (btnNewStory)
-      btnNewStory.addEventListener("click", handleCreateNewStory);
-
     if (btnModalAddStory) {
       btnModalAddStory.addEventListener("click", () => {
         closeModal("modal-stories-list");
@@ -460,7 +445,6 @@ document.addEventListener("DOMContentLoaded", () => {
             currentStory.content = canvasBody.innerHTML;
             currentStory.updatedAt = Date.now();
             saveStories();
-            updateCounts();
             showToast("ล้างเนื้อหากระดาษเรียบร้อยแล้ว ✨");
           },
         });
@@ -504,28 +488,6 @@ document.addEventListener("DOMContentLoaded", () => {
         showToast("ยกเลิกการสร้างข้อความแล้ว ⏹️");
       }
     });
-
-    if (btnUpgrade) {
-      btnUpgrade.addEventListener("click", () => {
-        openModal("modal-upgrade");
-      });
-    }
-
-    const btnActivatePro = document.getElementById("btn-activate-pro-preview");
-    if (btnActivatePro) {
-      btnActivatePro.addEventListener("click", () => {
-        state.isPro = true;
-        closeModal("modal-upgrade");
-        if (btnUpgrade) {
-          btnUpgrade.innerHTML = `⭐ PRO ACTIVE`;
-          btnUpgrade.style.background =
-            "linear-gradient(135deg, #10b981 0%, #06b6d4 100%)";
-        }
-        showToast(
-          "🌟 ปลดล็อกสิทธิ์ Pro Preview เรียบร้อยแล้ว! ใช้งาน Gemini 3.8 Flash และระบบคิดสดเต็มรูปแบบ ✨",
-        );
-      });
-    }
 
     if (btnNewChat) {
       btnNewChat.addEventListener("click", () => {
@@ -777,76 +739,6 @@ document.addEventListener("DOMContentLoaded", () => {
           `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${safeTitle}</title></head><body><h1>${safeTitle}</h1>${canvasBody.innerHTML}</body></html>`,
         );
       });
-
-    const btnShare = document.getElementById("btn-share");
-    if (btnShare) {
-      btnShare.addEventListener("click", () => {
-        openModal("modal-share");
-      });
-    }
-
-    const btnShareCanvas = document.getElementById("btn-share-copy-canvas");
-    if (btnShareCanvas) {
-      btnShareCanvas.addEventListener("click", () => {
-        const title = getCurrentDocTitle();
-        const text = canvasBody.innerText || "";
-        const fullContent = `${title}\n\n${text}`.trim();
-        navigator.clipboard
-          .writeText(fullContent)
-          .then(() => {
-            closeModal("modal-share");
-            showToast(
-              "คัดลอกเนื้อหานิยายทั้งหมดลงคลิปบอร์ดแล้ว พร้อมนำไปวางในเว็บนิยาย 📋✨",
-            );
-          })
-          .catch(() => showToast("คัดลอกไม่สำเร็จ"));
-      });
-    }
-
-    const btnShareSynopsis = document.getElementById("btn-share-copy-synopsis");
-    if (btnShareSynopsis) {
-      btnShareSynopsis.addEventListener("click", () => {
-        const story = getActiveStory();
-        const chars = (story.characters || [])
-          .map((c) => `- ${c.name} (${c.role || "ทั่วไป"}): ${c.desc || ""}`)
-          .join("\n");
-        const locs = (story.locations || [])
-          .map((l) => `- ${l.name} (${l.type || "สถานที่"}): ${l.desc || ""}`)
-          .join("\n");
-        const overview = (story.overview || [])
-          .map((o) => `[${o.title}]: ${o.desc || ""}`)
-          .join("\n");
-        const synopsis = [
-          `📖 ชื่อเรื่อง: ${story.title}`,
-          overview ? `\n📌 ภาพรวมโครงเรื่อง:\n${overview}` : "",
-          chars ? `\n👥 ตัวละครสำคัญ:\n${chars}` : "",
-          locs ? `\n🗺️ สถานที่สำคัญ:\n${locs}` : "",
-        ]
-          .filter(Boolean)
-          .join("\n");
-
-        navigator.clipboard
-          .writeText(synopsis)
-          .then(() => {
-            closeModal("modal-share");
-            showToast("คัดลอกข้อมูลสรุปโครงเรื่องและ Lorebook แล้ว 📝✨");
-          })
-          .catch(() => showToast("คัดลอกไม่สำเร็จ"));
-      });
-    }
-
-    const btnShareLink = document.getElementById("btn-share-copy-link");
-    if (btnShareLink) {
-      btnShareLink.addEventListener("click", () => {
-        navigator.clipboard
-          .writeText(window.location.href)
-          .then(() => {
-            closeModal("modal-share");
-            showToast("คัดลอกลิงก์โครงการสตูดิโอแล้ว 🔗");
-          })
-          .catch(() => showToast("คัดลอกไม่สำเร็จ"));
-      });
-    }
   }
 
   // ================= Formatting Helper =================
@@ -855,43 +747,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.execCommand(command, false, value);
     canvasBody.focus();
     saveCurrentEditorSelection();
-    updateCounts();
     triggerAutoSave();
-  }
-
-  // ================= Word & Character Count =================
-  function updateCounts() {
-    const text = canvasBody.innerText || "";
-    const cleanText = text.trim();
-    const charCount = cleanText.replace(/\s+/g, "").length;
-
-    let words = 0;
-    if (cleanText) {
-      if (typeof Intl !== "undefined" && Intl.Segmenter) {
-        try {
-          const segmenter = new Intl.Segmenter("th", { granularity: "word" });
-          const segments = segmenter.segment(cleanText);
-          for (const seg of segments) {
-            if (seg.isWordLike) words++;
-          }
-        } catch {
-          words = cleanText.split(/\s+/).filter(Boolean).length;
-        }
-      } else {
-        words = cleanText.split(/\s+/).filter(Boolean).length;
-      }
-    }
-
-    if (charCountBadge)
-      charCountBadge.textContent = `${charCount.toLocaleString()} ตัวอักษร`;
-    if (wordCountBadge)
-      wordCountBadge.textContent = `${words.toLocaleString()} คำ`;
   }
 
   // ================= Auto Save =================
   let autoSaveTimeout;
   function triggerAutoSave() {
-    if (saveStatusText) saveStatusText.textContent = "กำลังบันทึก...";
     clearTimeout(autoSaveTimeout);
     autoSaveTimeout = setTimeout(() => {
       const currentStory = getActiveStory();
@@ -899,7 +760,6 @@ document.addEventListener("DOMContentLoaded", () => {
       currentStory.content = canvasBody.innerHTML;
       currentStory.updatedAt = Date.now();
       saveStories();
-      if (saveStatusText) saveStatusText.textContent = "บันทึกแล้ว";
     }, 500);
   }
 
@@ -1678,7 +1538,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }, 50);
 
-    updateCounts();
     triggerAutoSave();
     if (!isAuto) {
       showToast("แทรกเนื้อหานิยายต่อท้ายเรื่องเรียบร้อยแล้ว ✨");
