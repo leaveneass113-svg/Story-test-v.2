@@ -92,46 +92,47 @@ sequenceDiagram
 
 ```text
 แอปแชท นิยาย/
-├── backend/                              # ส่วนเซิร์ฟเวอร์หลังบ้าน
-│   ├── .env                              # ไฟล์เก็บ Environment Variables & Keys
-│   ├── .env.example                      # ตัวอย่างไฟล์ตั้งค่า
-│   ├── package.json                      # การจัดการแพ็กเกจ (express, @supabase/supabase-js, cors, dotenv)
-│   ├── src/
-│   │   ├── server.js                     # จุดเริ่มต้น Express Server & Middleware
-│   │   ├── config.js                     # โหลดและตรวจสอบค่า Config (.env)
-│   │   ├── db/
-│   │   │   ├── supabase.js               # Supabase Client & CRUD operations สำหรับ chat_history
-│   │   │   └── schema.sql                # คำสั่ง DDL สร้างตาราง chat_history และ RLS
-│   │   ├── ai/
-│   │   │   ├── stream-parser.js          # Pure Parser แยกส่วน <thinking>...</thinking> และ story
-│   │   │   ├── gemini-service.js         # ตัวเชื่อมต่อ Google Gemini API (Stream)
-│   │   │   └── mock-stream-service.js    # ตัวจำลองการสตรีมมิ่งสด
-│   │   └── routes/
-│   │       ├── chat-routes.js            # Router จัดการ /api/chat/stream และ /api/chat/history
-│   │       └── health-routes.js          # Endpoint ตรวจสอบสถานะการเชื่อมต่อ Supabase & AI
-│   └── test/
-│       ├── server-e2e.test.js            # E2E Test ทดสอบการทำงานของเซิร์ฟเวอร์และสตรีม
-│       ├── stream-parser.test.js         # Unit Test ทดสอบการตัดแยก Thinking Logs ในทุกเคส
-│       └── supabase-db.test.js           # Unit Test ทดสอบการอ่าน-เขียนตาราง chat_history
-├── frontend/                             # ฝั่งหน้าบ้าน (Client UI & Presentation)
-│   ├── css/
-│   │   └── style.css                     # สไตล์องค์ประกอบ Dark Grey Tones, Layout & Themes
-│   ├── js/
-│   │   ├── app.js                        # Frontend Controller & UI Event Listeners
-│   │   ├── editor.js                     # ระบบจัดการ Canvas & Rich Text Editing
-│   │   ├── notes.js                      # ระบบจัดการ Lorebook (Characters, Locations, Overview)
-│   │   └── storage.js                    # ระบบจัดเก็บ IndexedDB & Supabase Sync หน้าบ้าน
-│   └── index.html                        # โครงสร้างหน้าเว็บหลัก Frontend
-├── shared/                               # ส่วนกลางใช้ร่วมกันทั้ง Frontend และ Backend
-│   └── story-chat-core.js                # Pure Domain Logic, Prompt Builder, Stream State Tracker
+├── apps/
+│   ├── server/                           # ส่วนเซิร์ฟเวอร์หลังบ้าน (Node.js / Express)
+│   │   ├── .env                          # ไฟล์เก็บ Environment Variables & Keys
+│   │   ├── package.json                  # การจัดการแพ็กเกจ (express, @supabase/supabase-js, cors, dotenv)
+│   │   ├── tsconfig.json                 # ตั้งค่า TypeScript Type Check สำหรับ Backend
+│   │   ├── src/
+│   │   │   ├── server.js                 # จุดเริ่มต้น Express Server & Middleware
+│   │   │   ├── config.js                 # โหลดและตรวจสอบค่า Config (.env)
+│   │   │   ├── db/
+│   │   │   │   ├── supabase.js           # Supabase Client & CRUD operations สำหรับ chat_history
+│   │   │   │   └── schema.sql            # คำสั่ง DDL สร้างตาราง chat_history และ RLS
+│   │   │   ├── ai/
+│   │   │   │   ├── stream-parser.js      # Pure Parser แยกส่วน <thinking>...</thinking> และ story
+│   │   │   │   ├── gemini-service.js     # ตัวเชื่อมต่อ Google Gemini API (Stream)
+│   │   │   │   └── mock-stream-service.js# ตัวจำลองการสตรีมมิ่งสด
+│   │   │   └── routes/
+│   │   │       ├── chat-routes.js        # Router จัดการ /api/chat/stream และ /api/chat/history
+│   │   │       └── health-routes.js      # Endpoint ตรวจสอบสถานะการเชื่อมต่อ Supabase & AI
+│   │   └── test/
+│   │       ├── server-e2e.test.js        # E2E Test ทดสอบการทำงานของเซิร์ฟเวอร์และสตรีม
+│   │       ├── stream-parser.test.js     # Unit Test ทดสอบการตัดแยก Thinking Logs ในทุกเคส
+│   │       └── supabase-db.test.js       # Unit Test ทดสอบการอ่าน-เขียนตาราง chat_history
+│   └── web/                              # ฝั่งหน้าบ้าน (React + Vite + TypeScript + Tailwind + shadcn/ui)
+│       ├── components/
+│       │   ├── ui/                       # collapsible.tsx, trace.tsx
+│       │   └── ai-elements/              # reasoning.tsx (Trace + Streamdown)
+│       ├── lib/                          # utils.ts
+│       ├── src/                          # App.tsx, main.tsx, index.css
+│       └── test/                         # reasoning-trace.test.mjs
+├── packages/
+│   └── shared/                           # ส่วนกลางใช้ร่วมกันทั้ง Frontend และ Backend (@novel-chat/shared)
+│       ├── story-chat-core.js            # Pure Domain Logic, Prompt Builder, Stream State Tracker
+│       └── story-chat-core.d.ts          # ไฟล์ประกาศชนิดข้อมูล TypeScript
 ├── tests/                                # ชุดทดสอบรวมระดับโปรเจกต์
-│   └── test-core.js                      # Automated Unit Tests สำหรับ shared/story-chat-core.js
+│   └── test-core.js                      # Automated Unit Tests สำหรับ packages/shared/story-chat-core.js
 ├── docs/
 │   ├── ARCHITECTURE.md                   # เอกสารพิมพ์เขียวนี้
 │   └── superpowers/plans/                # บันทึกแผนการพัฒนา
 ├── .env.example                          # Template ตัวแปรสภาพแวดล้อมรวมจุดเดียวที่ Root
 ├── .gitignore                            # กฎ Git ควบคุมทั้งโปรเจกต์จุดเดียวที่ Root
-└── package.json                          # Root Scripts (npm run dev, npm test)
+└── package.json                          # Root Monorepo Workspaces & Scripts
 ```
 
 ---

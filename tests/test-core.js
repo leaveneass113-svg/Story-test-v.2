@@ -4,7 +4,7 @@
  * รันด้วยคำสั่ง: node test-core.js
  */
 
-const StoryChatCore = require('../shared/story-chat-core.js');
+const StoryChatCore = require('../packages/shared/story-chat-core.js');
 
 let passedTests = 0;
 let failedTests = 0;

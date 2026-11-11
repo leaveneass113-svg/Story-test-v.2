@@ -1,0 +1,11 @@
+{
+  "name": "@novel-chat/shared",
+  "version": "1.0.0",
+  "description": "Shared core logic and types for Novel AI Chat & Co-Writer",
+  "main": "story-chat-core.js",
+  "types": "story-chat-core.d.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "license": "ISC"
+}

@@ -2,7 +2,8 @@
 # Dependencies
 # ==========================================
 node_modules/
-backend/node_modules/
+apps/*/node_modules/
+packages/*/node_modules/
 package-lock.json.log
 *.log
 
@@ -12,10 +13,16 @@ package-lock.json.log
 .env
 .env.*
 *.env
-backend/.env
-backend/.env.*
+apps/server/.env
+apps/server/.env.*
 !.env.example
-!backend/.env.example
+!apps/server/.env.example
+
+# ==========================================
+# Build & Output Directories
+# ==========================================
+dist/
+apps/web/dist/
 
 # ==========================================
 # Operating System & IDE Files
@@ -38,3 +45,4 @@ desktop.ini
 tmp/
 temp/
 coverage/
+.tmp-*

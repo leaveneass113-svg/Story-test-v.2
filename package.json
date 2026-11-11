@@ -1,11 +1,20 @@
 {
-  "name": "novel-chat-app",
+  "name": "novel-chat-monorepo",
   "version": "1.0.0",
-  "description": "Smart Novel AI Chat & Co-Writer Application with Real-time Thinking Process Streaming and Supabase Integration",
+  "private": true,
+  "description": "Smart Novel AI Chat & Co-Writer Monorepo (React + Vite + TypeScript + Tailwind + shadcn/ui & Express + Supabase)",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "npm --prefix backend run dev",
-    "start": "npm --prefix backend start",
-    "test": "node tests/test-core.js && npm --prefix backend test"
+    "dev": "npm --workspace=apps/web run dev",
+    "dev:web": "npm --workspace=apps/web run dev",
+    "dev:server": "npm --workspace=apps/server run dev",
+    "build": "npm --workspace=apps/web run build",
+    "typecheck": "npm --workspace=packages/shared run typecheck && npm --workspace=apps/server run typecheck && npm --workspace=apps/web run typecheck",
+    "start": "npm --workspace=apps/server start",
+    "test": "node tests/test-core.js && npm --workspace=apps/server test && npm --workspace=apps/web test"
   },
   "keywords": [
     "novel",
@@ -13,7 +22,10 @@
     "chat",
     "streaming",
     "thinking-process",
-    "supabase"
+    "supabase",
+    "monorepo",
+    "react",
+    "shadcn-ui"
   ],
   "author": "",
   "license": "ISC"
